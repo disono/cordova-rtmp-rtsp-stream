@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-rtsp-rtmp-stream"
-        version="0.1.5">
+        version="0.1.6">
     <name>Cordova RTSP</name>
     <description>Cross-platform plugin for Cordova / PhoneGap to to easily stream RTSP or RTMP. Available for Android ONLY.
     </description>
@@ -13,14 +13,12 @@
         <engine name="cordova" version=">=3.0.0"/>
     </engines>
 
-    <js-module src="www/video_streamer.js" name="VideoStream">
+    <js-module src="www/videoStreamer.js" name="VideoStream">
         <clobbers target="window.videoStreamer"/>
     </js-module>
 
     <!-- android -->
-    <platform name="android">
-		<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-	
+    <platform name="android">	
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="VideoStream">
                 <param name="android-package" value="com.webmons.disono.rtmpandrtspstreamer.VideoStream"/>
@@ -42,6 +40,8 @@
             <activity android:name="com.webmons.disono.rtmpandrtspstreamer.RTMPActivity"/>
             <activity android:name="com.webmons.disono.rtmpandrtspstreamer.RTSPActivity"/>
         </config-file>
+		
+		<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
 		
         <source-file src="src/com/webmons/disono/rtmpandrtspstreamer/VideoStream.java" target-dir="src/com/webmons/disono/rtmpandrtspstreamer"/>
         <source-file src="src/com/webmons/disono/rtmpandrtspstreamer/RTMPActivity.java" target-dir="src/com/webmons/disono/rtmpandrtspstreamer"/>
