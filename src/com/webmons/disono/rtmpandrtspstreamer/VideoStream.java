@@ -11,6 +11,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
+ * Author: Archie, Disono (webmonsph@gmail.com)
+ * Website: http://www.webmons.com
+ *
+ * Created at: 1/09/2018
+ */
+
+/**
  * Wowza Configuration
  *
  * Config
@@ -31,11 +38,6 @@ public class VideoStream extends CordovaPlugin {
 	private CallbackContext callbackContext;
     private Activity activity;
 	
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-		
-    }
-	
 	@Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         // application context
@@ -44,6 +46,9 @@ public class VideoStream extends CordovaPlugin {
 
         String url;
         PluginResult pluginResult;
+
+        String username;
+        String password;
 
         switch (action) {
             case "streamRTSP":
@@ -58,8 +63,8 @@ public class VideoStream extends CordovaPlugin {
                 return true;
 			case "streamRTSPAuth":
                 url = args.getString(0);
-                String username = args.getString(1);
-                String password = args.getInt(2);
+                username = args.getString(1);
+                password = args.getString(2);
 				_startRTSP(url, username, password);
 
                 // Don't return any result now
@@ -80,8 +85,8 @@ public class VideoStream extends CordovaPlugin {
                 return true;
 			case "streamRTMPAuth":
                 url = args.getString(0);
-                String username = args.getString(1);
-                String password = args.getInt(2);
+                username = args.getString(1);
+                password = args.getString(2);
 				_startRTMP(url, username, password);
 
                 // Don't return any result now
@@ -100,20 +105,20 @@ public class VideoStream extends CordovaPlugin {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    public void onPause(boolean p) {
+        super.onPause(p);
         _filters("stop");
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         _filters("stop");
     }
 
     private void _startRTSP(String uri, String username, String password)
     {
-        Intent intent = new Intent(this, RTSPActivity.class);
+        Intent intent = new Intent(activity, RTSPActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("password", password);
         intent.putExtra("url", uri);
@@ -122,7 +127,7 @@ public class VideoStream extends CordovaPlugin {
 
     private void _startRTMP(String uri, String username, String password)
     {
-        Intent intent = new Intent(this, RTMPActivity.class);
+        Intent intent = new Intent(activity, RTMPActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("password", password);
         intent.putExtra("url", uri);

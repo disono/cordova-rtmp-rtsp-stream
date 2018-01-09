@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -19,6 +18,15 @@ import com.pedro.rtsp.rtsp.Protocol;
 import com.pedro.rtsp.utils.ConnectCheckerRtsp;
 
 import org.apache.cordova.CordovaActivity;
+
+import io.cordova.hellocordova.R;
+
+/**
+ * Author: Archie, Disono (webmonsph@gmail.com)
+ * Website: http://www.webmons.com
+ *
+ * Created at: 1/09/2018
+ */
 
 public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp {
     SurfaceView surfaceView;
@@ -55,8 +63,9 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this.cordovaInterface.getActivity();
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
@@ -69,68 +78,45 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         _stopStreaming();
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         _stopStreaming();
     }
 
     @Override
     public void onConnectionSuccessRtsp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(RTSPActivity.this, "Connection success", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Connection success", Toast.LENGTH_SHORT)
+                .show());
     }
 
     @Override
     public void onConnectionFailedRtsp(final String reason) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(RTSPActivity.this, "Connection failed. " + reason,
-                        Toast.LENGTH_SHORT).show();
-                _stopStreaming();
-            }
+        runOnUiThread(() -> {
+            Toast.makeText(RTSPActivity.this, "Connection failed. " + reason,
+                    Toast.LENGTH_SHORT).show();
+            _stopStreaming();
         });
     }
 
     @Override
     public void onDisconnectRtsp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(RTSPActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Disconnected", Toast.LENGTH_SHORT).show());
     }
 
     @Override
     public void onAuthErrorRtsp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(RTSPActivity.this, "Auth error", Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Auth error", Toast.LENGTH_SHORT).show());
     }
 
     @Override
     public void onAuthSuccessRtsp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(RTSPActivity.this, "Auth success", Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Auth success", Toast.LENGTH_SHORT).show());
     }
 	
 	private void _broadcastRCV() {
@@ -140,32 +126,17 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
 
     private void _UIListener() {
         surfaceView = findViewById(R.id.surfaceView);
-        rtspCameral = new RtspCamera1(surfaceView, activity);
+        rtspCameral = new RtspCamera1(surfaceView, this);
         camera1ApiManager = new Camera1ApiManager(surfaceView, rtspCameral);
 
         ic_torch = findViewById(R.id.ic_torch);
-        ic_torch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _toggleFlash();
-            }
-        });
+        ic_torch.setOnClickListener(v -> _toggleFlash());
 
         ic_switch_camera = findViewById(R.id.ic_switch_camera);
-        ic_switch_camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _toggleCameraFace();
-            }
-        });
+        ic_switch_camera.setOnClickListener(v -> _toggleCameraFace());
 
         ic_broadcast = findViewById(R.id.ic_broadcast);
-        ic_broadcast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _toggleStreaming();
-            }
-        });
+        ic_broadcast.setOnClickListener(v -> _toggleStreaming());
     }
 
     private void _toggleStreaming() {
