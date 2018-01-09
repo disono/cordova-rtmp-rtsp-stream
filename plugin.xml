@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-rtmp-rtsp-stream"
-        version="0.1.0">
+        version="0.1.1">
     <name>Cordova RTSP</name>
     <description>Cross-platform plugin for Cordova / PhoneGap to to easily stream RTSP or RTMP. Available for Android ONLY.
     </description>
@@ -60,12 +60,6 @@
 		<resource-file src="res/drawable-mdpi/ic_switch_camera_white_48dp.png" target="res/drawable-mdpi/ic_switch_camera_white_48dp.png" />
 		<resource-file src="res/drawable-mdpi/ic_videocam_off_white_48dp.png" target="res/drawable-mdpi/ic_videocam_off_white_48dp.png" />
 		<resource-file src="res/drawable-mdpi/ic_videocam_white_48dp.png" target="res/drawable-mdpi/ic_videocam_white_48dp.png" />
-		
-		<resource-file src="res/drawable-v24/ic_flash_off_white_48dp.png" target="res/drawable-hdpi/ic_flash_off_white_48dp.png" />
-		<resource-file src="res/drawable-v24/ic_flash_on_white_48dp.png" target="res/drawable-v24/ic_flash_on_white_48dp.png" />
-		<resource-file src="res/drawable-v24/ic_switch_camera_white_48dp.png" target="res/drawable-v24/ic_switch_camera_white_48dp.png" />
-		<resource-file src="res/drawable-v24/ic_videocam_off_white_48dp.png" target="res/drawable-v24/ic_videocam_off_white_48dp.png" />
-		<resource-file src="res/drawable-v24/ic_videocam_white_48dp.png" target="res/drawable-v24/ic_videocam_white_48dp.png" />
 		
 		<resource-file src="res/drawable-xhdpi/ic_flash_off_white_48dp.png" target="res/drawable-hdpi/ic_flash_off_white_48dp.png" />
 		<resource-file src="res/drawable-xhdpi/ic_flash_on_white_48dp.png" target="res/drawable-xhdpi/ic_flash_on_white_48dp.png" />
