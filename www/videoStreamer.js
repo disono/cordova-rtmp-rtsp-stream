@@ -1,8 +1,4 @@
-cordova.define("cordova-rtsp-rtmp-stream-app", function(require, exports, module) {
-'use strict';
-
 var exec = require('cordova/exec');
-
 var videoStreamer = {};
 
 videoStreamer.streamRTSP = function(uri, success, failure) {
@@ -61,4 +57,3 @@ videoStreamer.streamStop = function(success, failure) {
 };
 
 module.exports = videoStreamer;
-});
