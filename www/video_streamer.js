@@ -1,4 +1,4 @@
-cordova.define("cordova-rtsp-rtmp-stream.VideoStream", function(require, exports, module) {
+cordova.define("cordova-rtsp-rtmp-stream-app", function(require, exports, module) {
 'use strict';
 
 var exec = require('cordova/exec');
