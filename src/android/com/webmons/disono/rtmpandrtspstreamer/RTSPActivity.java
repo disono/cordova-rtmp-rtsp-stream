@@ -187,17 +187,17 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     }
 
     private void _toggleBtnImgFlash() {
-        String icon = (!isFlashOn) ? "ic_flash_off_white_48dp" : "ic_flash_on_white_48dp";
+        String icon = (!isFlashOn) ? "ic_flash_off_white_36dp" : "ic_flash_on_white_36dp";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ic_broadcast.setImageDrawable(getDrawable(_getResource(icon, "drawable")));
+            ic_torch.setImageDrawable(getDrawable(_getResource(icon, "drawable")));
         } else {
-            ic_broadcast.setImageResource(_getResource(icon, "drawable"));
+            ic_torch.setImageResource(_getResource(icon, "drawable"));
         }
     }
 
     private void _toggleBtnImgVideo() {
-        String icon = (!isStreamingOn) ? "ic_videocam_white_48dp" : "ic_videocam_off_white_48dp";
+        String icon = (!isStreamingOn) ? "ic_videocam_white_36dp" : "ic_videocam_off_white_36dp";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ic_broadcast.setImageDrawable(getDrawable(_getResource(icon, "drawable")));
