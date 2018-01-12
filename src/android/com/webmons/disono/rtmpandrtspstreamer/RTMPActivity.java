@@ -64,7 +64,7 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this.cordovaInterface.getActivity();
-        setContentView(R.layout.activity_main);
+        setContentView(_getResource("rtsp_rtmp_streamer", "layout"));
 
         Intent intent = getIntent();
         _username = intent.getStringExtra("username");

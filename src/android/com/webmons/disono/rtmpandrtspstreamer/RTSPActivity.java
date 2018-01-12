@@ -65,7 +65,7 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this.cordovaInterface.getActivity();
-        setContentView(_getResource("vlc_player", "layout"));
+        setContentView(_getResource("rtsp_rtmp_streamer", "layout"));
 
         Intent intent = getIntent();
         _username = intent.getStringExtra("username");
@@ -125,8 +125,8 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
 
     private void _UIListener() {
         surfaceView = findViewById(_getResource("rtmp_rtsp_stream_surfaceView", "id"));
-        rtmpCameral = new RtmpCamera1(surfaceView, this);
-        camera1ApiManager = new Camera1ApiManager(surfaceView, rtmpCameral);
+        rtspCameral = new RtspCamera1(surfaceView, this);
+        camera1ApiManager = new Camera1ApiManager(surfaceView, rtspCameral);
 
         ic_torch = findViewById(_getResource("ic_torch", "id"));
         ic_torch.setOnClickListener(v -> _toggleFlash());
