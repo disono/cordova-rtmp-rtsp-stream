@@ -55,25 +55,25 @@
 		<resource-file src="src/android/res/drawable-hdpi/ic_videocam_off_white_36dp.png" target="res/drawable-hdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-hdpi/ic_videocam_white_36dp.png" target="res/drawable-hdpi/ic_videocam_white_36dp.png" />
 		
-		<resource-file src="src/android/res/drawable-mdpi/ic_flash_off_white_36dp.png" target="res/drawable-hdpi/ic_flash_off_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-mdpi/ic_flash_off_white_36dp.png" target="res/drawable-mdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-mdpi/ic_flash_on_white_36dp.png" target="res/drawable-mdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-mdpi/ic_switch_video_white_36dp.png" target="res/drawable-mdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-mdpi/ic_videocam_off_white_36dp.png" target="res/drawable-mdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-mdpi/ic_videocam_white_36dp.png" target="res/drawable-mdpi/ic_videocam_white_36dp.png" />
 		
-		<resource-file src="src/android/res/drawable-xhdpi/ic_flash_off_white_36dp.png" target="res/drawable-hdpi/ic_flash_off_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xhdpi/ic_flash_off_white_36dp.png" target="res/drawable-xhdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xhdpi/ic_flash_on_white_36dp.png" target="res/drawable-xhdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xhdpi/ic_switch_video_white_36dp.png" target="res/drawable-xhdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xhdpi/ic_videocam_off_white_36dp.png" target="res/drawable-xhdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xhdpi/ic_videocam_white_36dp.png" target="res/drawable-xhdpi/ic_videocam_white_36dp.png" />
 		
-		<resource-file src="src/android/res/drawable-xxhdpi/ic_flash_off_white_36dp.png" target="res/drawable-hdpi/ic_flash_off_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxhdpi/ic_flash_off_white_36dp.png" target="res/drawable-xxhdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_flash_on_white_36dp.png" target="res/drawable-xxhdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_switch_video_white_36dp.png" target="res/drawable-xxhdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_videocam_off_white_36dp.png" target="res/drawable-xxhdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_videocam_white_36dp.png" target="res/drawable-xxhdpi/ic_videocam_white_36dp.png" />
 		
-		<resource-file src="src/android/res/drawable-xxxhdpi/ic_flash_off_white_36dp.png" target="res/drawable-hdpi/ic_flash_off_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxxhdpi/ic_flash_off_white_36dp.png" target="res/drawable-xxxhdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxxhdpi/ic_flash_on_white_36dp.png" target="res/drawable-xxxhdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxxhdpi/ic_switch_video_white_36dp.png" target="res/drawable-xxxhdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxxhdpi/ic_videocam_off_white_36dp.png" target="res/drawable-xxxhdpi/ic_videocam_off_white_36dp.png" />
