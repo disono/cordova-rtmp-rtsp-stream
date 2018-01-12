@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    tools:context="com.webmons.disono.rtmpandrtspstreamer.MainActivity">
+    android:layout_height="fill_parent">
 
     <FrameLayout
         android:id="@+id/cameraView"
@@ -12,7 +10,7 @@
         android:background="#0d0d0d">
 
         <SurfaceView
-            android:id="@+id/surfaceView"
+            android:id="@+id/rtmp_rtsp_stream_surfaceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
