@@ -1,11 +1,12 @@
 package com.webmons.disono.rtmpandrtspstreamer;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Build;
-import android.content.Context;
-import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.widget.ImageButton;
@@ -14,13 +15,12 @@ import android.widget.Toast;
 import com.pedro.encoder.input.video.Camera1ApiManager;
 import com.pedro.encoder.input.video.CameraOpenException;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
+
 import net.ossrs.rtmp.ConnectCheckerRtmp;
 
 import org.apache.cordova.CordovaActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.content.res.Resources;
 
 /**
  * Author: Archie, Disono (webmonsph@gmail.com)
@@ -44,8 +44,8 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
     private Camera1ApiManager camera1ApiManager;
     private boolean isFlashOn = false;
     private boolean isStreamingOn = false;
-	
-	BroadcastReceiver br = new BroadcastReceiver() {
+
+    BroadcastReceiver br = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -75,7 +75,7 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
         _url = intent.getStringExtra("url");
 
         _UIListener();
-		_broadcastRCV();
+        _broadcastRCV();
     }
 
     @Override
@@ -87,6 +87,7 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        activity.unregisterReceiver(br);
         _stopStreaming();
     }
 
@@ -110,13 +111,19 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
     @Override
     public void onDisconnectRtmp() {
         VideoStream.sendBroadCast(activity, "onDisconnect");
-        runOnUiThread(() -> Toast.makeText(RTMPActivity.this, "Disconnected", Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> {
+            Toast.makeText(RTMPActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
+            _stopStreaming();
+        });
     }
 
     @Override
     public void onAuthErrorRtmp() {
         VideoStream.sendBroadCast(activity, "onAuthError");
-        runOnUiThread(() -> Toast.makeText(RTMPActivity.this, "Auth error", Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> {
+            Toast.makeText(RTMPActivity.this, "Auth error", Toast.LENGTH_SHORT).show();
+            _stopStreaming();
+        });
     }
 
     @Override
@@ -124,8 +131,8 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
         VideoStream.sendBroadCast(activity, "onAuthSuccess");
         runOnUiThread(() -> Toast.makeText(RTMPActivity.this, "Auth success", Toast.LENGTH_SHORT).show());
     }
-	
-	private void _broadcastRCV() {
+
+    private void _broadcastRCV() {
         IntentFilter filter = new IntentFilter(VideoStream.BROADCAST_FILTER);
         activity.registerReceiver(br, filter);
     }
@@ -151,8 +158,6 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
         } else {
             _stopStreaming();
         }
-
-        _toggleBtnImgVideo();
     }
 
     private void _startStreaming() {
@@ -176,22 +181,31 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
                 e.printStackTrace();
             }
         }
+
+        _toggleBtnImgVideo();
     }
 
     private void _stopStreaming() {
         VideoStream.sendBroadCast(activity, "onStopStream");
 
         if (rtmpCameral.isStreaming()) {
-            _toggleFlash();
-            isStreamingOn = false;
-
             rtmpCameral.stopStream();
             rtmpCameral.stopPreview();
+
+            isStreamingOn = false;
+            _toggleBtnImgVideo();
+
+            if (camera1ApiManager.isLanternEnable()) {
+                camera1ApiManager.disableLantern();
+
+                isFlashOn = false;
+                _toggleBtnImgFlash();
+            }
         }
     }
 
     private void _toggleFlash() {
-        if (!isFlashOn) {
+        if (!isFlashOn && !camera1ApiManager.isLanternEnable()) {
             camera1ApiManager.enableLantern();
             isFlashOn = true;
         } else {
@@ -204,7 +218,7 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
     }
 
     private void _toggleBtnImgFlash() {
-        String icon = (!isFlashOn) ? "ic_flash_off_white_36dp" : "ic_flash_on_white_36dp";
+        String icon = (!isFlashOn) ? "ic_flash_on_white_36dp" : "ic_flash_off_white_36dp";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ic_torch.setImageDrawable(getDrawable(_getResource(icon, "drawable")));
@@ -232,8 +246,7 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
         }
     }
 
-    private int _getResource(String name, String type)
-    {
+    private int _getResource(String name, String type) {
         String package_name = getApplication().getPackageName();
         Resources resources = getApplication().getResources();
         return resources.getIdentifier(name, type, package_name);

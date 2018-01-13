@@ -1,11 +1,12 @@
 package com.webmons.disono.rtmpandrtspstreamer;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Build;
-import android.content.Context;
-import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.widget.ImageButton;
@@ -21,8 +22,6 @@ import org.apache.cordova.CordovaActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.res.Resources;
-
 /**
  * Author: Archie, Disono (webmonsph@gmail.com)
  * Website: http://www.webmons.com
@@ -34,7 +33,7 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     SurfaceView surfaceView;
     private RtspCamera1 rtspCameral;
     private Activity activity;
-	
+
     private String _url = null;
     private String _username = null;
     private String _password = null;
@@ -45,8 +44,8 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     private Camera1ApiManager camera1ApiManager;
     private boolean isFlashOn = false;
     private boolean isStreamingOn = false;
-	
-	BroadcastReceiver br = new BroadcastReceiver() {
+
+    BroadcastReceiver br = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -74,9 +73,9 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
         _username = intent.getStringExtra("username");
         _password = intent.getStringExtra("password");
         _url = intent.getStringExtra("url");
-        
+
         _UIListener();
-		_broadcastRCV();
+        _broadcastRCV();
     }
 
     @Override
@@ -88,6 +87,7 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        activity.unregisterReceiver(br);
         _stopStreaming();
     }
 
@@ -111,13 +111,19 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     @Override
     public void onDisconnectRtsp() {
         VideoStream.sendBroadCast(activity, "onDisconnect");
-        runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Disconnected", Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> {
+            Toast.makeText(RTSPActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
+            _stopStreaming();
+        });
     }
 
     @Override
     public void onAuthErrorRtsp() {
         VideoStream.sendBroadCast(activity, "onAuthError");
-        runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Auth error", Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> {
+            Toast.makeText(RTSPActivity.this, "Auth error", Toast.LENGTH_SHORT).show();
+            _stopStreaming();
+        });
     }
 
     @Override
@@ -125,8 +131,8 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
         VideoStream.sendBroadCast(activity, "onAuthSuccess");
         runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Auth success", Toast.LENGTH_SHORT).show());
     }
-	
-	private void _broadcastRCV() {
+
+    private void _broadcastRCV() {
         IntentFilter filter = new IntentFilter(VideoStream.BROADCAST_FILTER);
         activity.registerReceiver(br, filter);
     }
@@ -152,8 +158,6 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
         } else {
             _stopStreaming();
         }
-
-        _toggleBtnImgVideo();
     }
 
     private void _startStreaming() {
@@ -178,22 +182,31 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
                 e.printStackTrace();
             }
         }
+
+        _toggleBtnImgVideo();
     }
 
     private void _stopStreaming() {
         VideoStream.sendBroadCast(activity, "onStopStream");
 
         if (rtspCameral.isStreaming()) {
-            _toggleFlash();
-            isStreamingOn = false;
-
             rtspCameral.stopStream();
             rtspCameral.stopPreview();
+
+            isStreamingOn = false;
+            _toggleBtnImgVideo();
+
+            if (camera1ApiManager.isLanternEnable()) {
+                camera1ApiManager.disableLantern();
+
+                isFlashOn = false;
+                _toggleBtnImgFlash();
+            }
         }
     }
 
     private void _toggleFlash() {
-        if (!isFlashOn) {
+        if (!isFlashOn && !camera1ApiManager.isLanternEnable()) {
             camera1ApiManager.enableLantern();
             isFlashOn = true;
         } else {
@@ -206,7 +219,7 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     }
 
     private void _toggleBtnImgFlash() {
-        String icon = (!isFlashOn) ? "ic_flash_off_white_36dp" : "ic_flash_on_white_36dp";
+        String icon = (!isFlashOn) ? "ic_flash_on_white_36dp" : "ic_flash_off_white_36dp";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ic_torch.setImageDrawable(getDrawable(_getResource(icon, "drawable")));
@@ -234,8 +247,7 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
         }
     }
 
-    private int _getResource(String name, String type)
-    {
+    private int _getResource(String name, String type) {
         String package_name = getApplication().getPackageName();
         Resources resources = getApplication().getResources();
         return resources.getIdentifier(name, type, package_name);

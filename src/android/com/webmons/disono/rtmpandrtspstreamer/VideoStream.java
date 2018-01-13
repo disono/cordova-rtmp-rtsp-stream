@@ -5,8 +5,11 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.util.Log;
+
+import com.webmons.disono.libVLC.VLCActivity;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -18,23 +21,23 @@ import org.json.JSONObject;
 /**
  * Author: Archie, Disono (webmonsph@gmail.com)
  * Website: http://www.webmons.com
- * <p>
+ *
  * Created at: 1/09/2018
  */
 
 /**
  * Wowza Configuration
- * <p>
+ *
  * Config
  * http://your-ip/enginemanager
  * https://www.wowza.com/docs/how-to-set-up-live-streaming-using-an-rtmp-based-encoder
  * https://www.wowza.com/docs/how-to-set-up-live-streaming-using-a-native-rtp-encoder-with-sdp-file
- * <p>
+ *
  * Server URL: rtmp://[wowza-ip-address]/live
  * Stream Name: myStream
  * User: publisherName
  * password: [password]
- * <p>
+ *
  * Verify your server or endpoint using ffmpeg
  * ffmpeg -i pathtomp4file -f flv rtmp://yourendpoint
  */
@@ -241,6 +244,7 @@ public class VideoStream extends CordovaPlugin {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mActivity.unregisterReceiver(br);
         _filters("stop");
     }
 
@@ -249,6 +253,8 @@ public class VideoStream extends CordovaPlugin {
     }
 
     private void _startRTSP(String uri, String username, String password) {
+        _broadcastRCV();
+
         Intent intent = new Intent(mActivity, RTSPActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("password", password);
@@ -257,6 +263,8 @@ public class VideoStream extends CordovaPlugin {
     }
 
     private void _startRTMP(String uri, String username, String password) {
+        _broadcastRCV();
+
         Intent intent = new Intent(mActivity, RTMPActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("password", password);
@@ -300,6 +308,11 @@ public class VideoStream extends CordovaPlugin {
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, obj);
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void _broadcastRCV() {
+        IntentFilter filter = new IntentFilter(BROADCAST_LISTENER);
+        mActivity.registerReceiver(br, filter);
     }
 
     static void sendBroadCast(Activity activity, String methodName) {
