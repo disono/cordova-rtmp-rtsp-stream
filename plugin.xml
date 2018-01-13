@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-rtsp-rtmp-stream"
-        version="0.1.15">
+        version="0.1.16">
     <name>Cordova RTSP RTMP Player</name>
     <description>Cross-platform plugin for Cordova / PhoneGap to to easily stream RTSP or RTMP. Available for Android ONLY.
     </description>
