@@ -2,43 +2,51 @@ package com.webmons.disono.rtmpandrtspstreamer;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Author: Archie, Disono (webmonsph@gmail.com)
  * Website: http://www.webmons.com
- *
+ * <p>
  * Created at: 1/09/2018
  */
 
 /**
  * Wowza Configuration
- *
+ * <p>
  * Config
  * http://your-ip/enginemanager
  * https://www.wowza.com/docs/how-to-set-up-live-streaming-using-an-rtmp-based-encoder
  * https://www.wowza.com/docs/how-to-set-up-live-streaming-using-a-native-rtp-encoder-with-sdp-file
- *
+ * <p>
  * Server URL: rtmp://[wowza-ip-address]/live
  * Stream Name: myStream
  * User: publisherName
  * password: [password]
- *
+ * <p>
  * Verify your server or endpoint using ffmpeg
  * ffmpeg -i pathtomp4file -f flv rtmp://yourendpoint
  */
 
 public class VideoStream extends CordovaPlugin {
+    private final static String TAG = "VideoStream";
+    public final static String BROADCAST_LISTENER = "com.webmons.disono.rtmpandrtspstreamer.results";
+    public final static String BROADCAST_FILTER = "com.webmons.disono.rtmpandrtspstreamer";
+
     private CallbackContext callbackContext;
     PluginResult pluginResult;
-    private Activity activity;
+    private Activity mActivity;
 
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private static final String CAMERA = Manifest.permission.CAMERA;
@@ -52,10 +60,71 @@ public class VideoStream extends CordovaPlugin {
     private String password;
     private String _action;
 
+    BroadcastReceiver br = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                String method = intent.getStringExtra("method");
+                String data = intent.getStringExtra("data");
+                Log.d(TAG, "Method: " + method + " Data: " + data);
+
+                if (method != null) {
+                    switch (method) {
+                        case "onConnectionSuccess":
+                            _cordovaSendResult("onConnectionSuccess", data);
+
+                            break;
+                        case "onConnectionFailed":
+                            _plugResultError("Connection failed.");
+
+                            break;
+                        case "onDisconnect":
+                            _plugResultError("Disconnected from the stream server.");
+
+                            break;
+                        case "onAuthError":
+                            _plugResultError("Authentication error, invalid credentials.");
+
+                            break;
+                        case "onAuthSuccess":
+                            _cordovaSendResult("onAuthSuccess", data);
+
+                            break;
+                        case "onStartStream":
+                            _cordovaSendResult("onStartStream", data);
+
+                            break;
+
+                        case "onStopStream":
+                            _cordovaSendResult("onStopStream", data);
+
+                            break;
+
+                        case "onError":
+                            if (data != null) {
+                                try {
+                                    JSONObject obj = new JSONObject(data);
+                                    _plugResultError(obj.getString("message"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    _plugResultError(e.getMessage());
+                                }
+                            } else {
+                                _plugResultError("Unknown error occurred.");
+                            }
+
+                            break;
+                    }
+                }
+            }
+        }
+    };
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         // application context
-        activity = cordova.getActivity();
+        mActivity = cordova.getActivity();
         this.callbackContext = callbackContext;
         _action = action;
 
@@ -69,6 +138,7 @@ public class VideoStream extends CordovaPlugin {
             switch (action) {
                 case "streamRTSP":
                     _startRTSP(url, null, null);
+                    _plugResultsKeep();
 
                     // Don't return any result now
                     pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
@@ -78,6 +148,7 @@ public class VideoStream extends CordovaPlugin {
                     return true;
                 case "streamRTSPAuth":
                     _startRTSP(url, username, password);
+                    _plugResultsKeep();
 
                     // Don't return any result now
                     pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
@@ -87,6 +158,7 @@ public class VideoStream extends CordovaPlugin {
                     return true;
                 case "streamRTMP":
                     _startRTMP(url, null, null);
+                    _plugResultsKeep();
 
                     // Don't return any result now
                     pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
@@ -96,6 +168,7 @@ public class VideoStream extends CordovaPlugin {
                     return true;
                 case "streamRTMPAuth":
                     _startRTMP(url, username, password);
+                    _plugResultsKeep();
 
                     // Don't return any result now
                     pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
@@ -105,11 +178,13 @@ public class VideoStream extends CordovaPlugin {
                     return true;
                 case "streamStop":
                     _filters("stop");
+                    _plugResultsKeep();
 
                     return true;
             }
         } else {
             _getReadPermission(REQ_CODE);
+            _plugResultsKeep();
         }
 
         return false;
@@ -128,42 +203,27 @@ public class VideoStream extends CordovaPlugin {
             switch (_action) {
                 case "streamRTSP":
                     _startRTSP(url, null, null);
-
-                    // Don't return any result now
-                    pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
-                    pluginResult.setKeepCallback(true);
-                    callbackContext.sendPluginResult(pluginResult);
+                    _plugResultsKeep();
 
                     break;
                 case "streamRTSPAuth":
                     _startRTSP(url, username, password);
-
-                    // Don't return any result now
-                    pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
-                    pluginResult.setKeepCallback(true);
-                    callbackContext.sendPluginResult(pluginResult);
+                    _plugResultsKeep();
 
                     break;
                 case "streamRTMP":
                     _startRTMP(url, null, null);
-
-                    // Don't return any result now
-                    pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
-                    pluginResult.setKeepCallback(true);
-                    callbackContext.sendPluginResult(pluginResult);
+                    _plugResultsKeep();
 
                     break;
                 case "streamRTMPAuth":
                     _startRTMP(url, username, password);
-
-                    // Don't return any result now
-                    pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
-                    pluginResult.setKeepCallback(true);
-                    callbackContext.sendPluginResult(pluginResult);
+                    _plugResultsKeep();
 
                     break;
                 case "streamStop":
                     _filters("stop");
+                    _plugResultsKeep();
 
                     break;
             }
@@ -187,25 +247,71 @@ public class VideoStream extends CordovaPlugin {
     }
 
     private void _startRTSP(String uri, String username, String password) {
-        Intent intent = new Intent(activity, RTSPActivity.class);
+        Intent intent = new Intent(mActivity, RTSPActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("password", password);
         intent.putExtra("url", uri);
-        activity.startActivity(intent);
+        mActivity.startActivity(intent);
     }
 
     private void _startRTMP(String uri, String username, String password) {
-        Intent intent = new Intent(activity, RTMPActivity.class);
+        Intent intent = new Intent(mActivity, RTMPActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("password", password);
         intent.putExtra("url", uri);
-        activity.startActivity(intent);
+        mActivity.startActivity(intent);
     }
 
     private void _filters(String methodName) {
         Intent intent = new Intent();
-        intent.setAction("com.webmons.disono.rtmpandrtspstreamer");
+        intent.setAction(BROADCAST_FILTER);
         intent.putExtra("method", methodName);
+        mActivity.sendBroadcast(intent);
+    }
+
+    private void _plugResultsKeep() {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void _plugResultError(String message) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, message);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void _cordovaSendResult(String event, String data) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("event_name", event);
+            obj.put("data", (data != null) ? new JSONObject(data) : "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, e.getMessage());
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return;
+        }
+
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, obj);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    static void sendBroadCast(Activity activity, String methodName) {
+        Intent intent = new Intent();
+        intent.setAction(BROADCAST_LISTENER);
+        intent.putExtra("method", methodName);
+        activity.sendBroadcast(intent);
+    }
+
+    public static void sendBroadCast(Activity activity, String methodName, JSONObject object) {
+        Intent intent = new Intent();
+        intent.setAction(BROADCAST_LISTENER);
+        intent.putExtra("method", methodName);
+        intent.putExtra("data", object.toString());
         activity.sendBroadcast(intent);
     }
 }

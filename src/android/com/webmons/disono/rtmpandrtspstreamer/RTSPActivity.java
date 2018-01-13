@@ -18,6 +18,9 @@ import com.pedro.rtsp.rtsp.Protocol;
 import com.pedro.rtsp.utils.ConnectCheckerRtsp;
 
 import org.apache.cordova.CordovaActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.res.Resources;
 
 /**
@@ -90,12 +93,14 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
 
     @Override
     public void onConnectionSuccessRtsp() {
+        VideoStream.sendBroadCast(activity, "onConnectionSuccess");
         runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Connection success", Toast.LENGTH_SHORT)
                 .show());
     }
 
     @Override
     public void onConnectionFailedRtsp(final String reason) {
+        VideoStream.sendBroadCast(activity, "onConnectionFailed");
         runOnUiThread(() -> {
             Toast.makeText(RTSPActivity.this, "Connection failed. " + reason,
                     Toast.LENGTH_SHORT).show();
@@ -105,21 +110,24 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
 
     @Override
     public void onDisconnectRtsp() {
+        VideoStream.sendBroadCast(activity, "onDisconnect");
         runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Disconnected", Toast.LENGTH_SHORT).show());
     }
 
     @Override
     public void onAuthErrorRtsp() {
+        VideoStream.sendBroadCast(activity, "onAuthError");
         runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Auth error", Toast.LENGTH_SHORT).show());
     }
 
     @Override
     public void onAuthSuccessRtsp() {
+        VideoStream.sendBroadCast(activity, "onAuthSuccess");
         runOnUiThread(() -> Toast.makeText(RTSPActivity.this, "Auth success", Toast.LENGTH_SHORT).show());
     }
 	
 	private void _broadcastRCV() {
-        IntentFilter filter = new IntentFilter("com.webmons.disono.rtmpandrtspstreamer");
+        IntentFilter filter = new IntentFilter(VideoStream.BROADCAST_FILTER);
         activity.registerReceiver(br, filter);
     }
 
@@ -155,15 +163,26 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
         if (rtspCameral.prepareAudio() && rtspCameral.prepareVideo()) {
             rtspCameral.startStream(_url);
             isStreamingOn = true;
-        } else {
-            Toast.makeText(activity, "Error preparing stream, This device cant do it", Toast.LENGTH_SHORT)
-                    .show();
 
+            VideoStream.sendBroadCast(activity, "onStartStream");
+        } else {
+            Toast.makeText(activity, "Error preparing stream, This device cant do it.", Toast.LENGTH_SHORT)
+                    .show();
             isStreamingOn = false;
+
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("message", "Error preparing stream, This device cant do it.");
+                VideoStream.sendBroadCast(activity, "onError", obj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void _stopStreaming() {
+        VideoStream.sendBroadCast(activity, "onStopStream");
+
         if (rtspCameral.isStreaming()) {
             _toggleFlash();
             isStreamingOn = false;
