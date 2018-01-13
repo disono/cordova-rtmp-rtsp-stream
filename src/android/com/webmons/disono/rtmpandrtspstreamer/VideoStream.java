@@ -185,6 +185,8 @@ public class VideoStream extends CordovaPlugin {
         } else {
             _getReadPermission(REQ_CODE);
             _plugResultsKeep();
+			
+			return true;
         }
 
         return false;
