@@ -9,7 +9,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-import com.webmons.disono.libVLC.VLCActivity;
+//import com.webmons.disono.libVLC.VLCActivity;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
