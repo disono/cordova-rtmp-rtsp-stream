@@ -24,6 +24,12 @@ videoStreamer.streamRTMP('uri', [success], [failed]);
 videoStreamer.streamRTMPAuth('uri', 'your-username', 'your-password', [success], [failed]);
 ```
 
+# Future Features
+- [ ] iOS support using LFLiveKit
+https://github.com/LaiFengiOS/LFLiveKit
+
+- [ ] Support for comment form and comment list (Android)
+
 # Credits
 [https://github.com/pedroSG94/rtmp-rtsp-stream-client-java](https://github.com/pedroSG94/rtmp-rtsp-stream-client-java)
 ```sh
