@@ -1,7 +1,9 @@
 package com.webmons.disono.rtmpandrtspstreamer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.SurfaceView;
@@ -29,10 +31,19 @@ public class RTSPActivity extends AppCompatActivity implements ConnectCheckerRts
     private boolean isFlashOn = false;
     private boolean isStreamingOn = false;
 
+    PowerManager.WakeLock mWakeLock;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (pm != null) {
+            mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK |
+                    PowerManager.ON_AFTER_RELEASE, TAG);
+            mWakeLock.acquire();
+        }
 
         Intent intent = getIntent();
         _username = intent.getStringExtra("username");
@@ -54,6 +65,10 @@ public class RTSPActivity extends AppCompatActivity implements ConnectCheckerRts
     protected void onDestroy() {
         super.onDestroy();
         _stopStreaming();
+
+        if (mWakeLock != null) {
+            mWakeLock.release();
+        }
     }
 
     @Override

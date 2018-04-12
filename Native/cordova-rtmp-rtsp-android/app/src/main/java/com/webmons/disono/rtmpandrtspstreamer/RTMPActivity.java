@@ -1,8 +1,10 @@
 package com.webmons.disono.rtmpandrtspstreamer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import net.ossrs.rtmp.ConnectCheckerRtmp;
 
 public class RTMPActivity extends AppCompatActivity implements ConnectCheckerRtmp {
+    private static String TAG = "RTMPActivity";
     SurfaceView surfaceView;
     private RtmpCamera1 rtmpCameral;
 
@@ -30,17 +33,24 @@ public class RTMPActivity extends AppCompatActivity implements ConnectCheckerRtm
     private boolean isFlashOn = false;
     private boolean isStreamingOn = false;
 
+    PowerManager.WakeLock mWakeLock;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (pm != null) {
+            mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK |
+                    PowerManager.ON_AFTER_RELEASE, TAG);
+            mWakeLock.acquire();
+        }
+
         Intent intent = getIntent();
         _username = intent.getStringExtra("username");
         _password = intent.getStringExtra("password");
         _url = intent.getStringExtra("url");
-
-        Toast.makeText(this, "U: " + _username + " P: " + _password + " U: " + _url, Toast.LENGTH_SHORT).show();
 
         _UIListener();
     }
@@ -55,6 +65,10 @@ public class RTMPActivity extends AppCompatActivity implements ConnectCheckerRtm
     protected void onDestroy() {
         super.onDestroy();
         _stopStreaming();
+
+        if (mWakeLock != null) {
+            mWakeLock.release();
+        }
     }
 
     @Override
