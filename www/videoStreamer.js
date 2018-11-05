@@ -56,4 +56,37 @@ videoStreamer.streamStop = function(success, failure) {
     );
 };
 
+videoStreamer.commentList = function(comments, success, failure) {
+    // fire
+    exec(
+        success,
+        failure,
+        'VideoStream',
+        'commentList',
+        [comments]
+    );
+};
+
+videoStreamer.commentListShow = function(isShow, success, failure) {
+    // fire
+    exec(
+        success,
+        failure,
+        'VideoStream',
+        'commentListShow',
+        [isShow]
+    );
+};
+
+videoStreamer.videoRecord = function(success, failure) {
+    // fire
+    exec(
+        success,
+        failure,
+        'VideoStream',
+        'videoRecord',
+        []
+    );
+};
+
 module.exports = videoStreamer;

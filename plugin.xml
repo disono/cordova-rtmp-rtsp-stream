@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-rtsp-rtmp-stream"
-        version="0.1.17">
+        version="0.1.18">
     <name>Cordova RTSP RTMP Player</name>
     <description>Cross-platform plugin for Cordova / PhoneGap to to easily stream RTSP or RTMP. Available for Android ONLY.
     </description>
@@ -25,58 +25,88 @@
             </feature>
         </config-file>
 
-        <config-file target="AndroidManifest.xml" parent="/manifest">			
+        <config-file target="AndroidManifest.xml" parent="/manifest">
 			<uses-permission android:name="android.permission.FLASHLIGHT" />
-			<uses-permission android:name="android.permission.CAMERA" />
 			<uses-permission android:name="android.permission.INTERNET" />
 			<uses-permission android:name="android.permission.RECORD_AUDIO" />
+			<uses-permission android:name="android.permission.CAMERA" />
 			<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    		<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 			<uses-feature android:name="android.hardware.camera" />
 			<uses-feature android:name="android.hardware.camera2.full" />
 			<uses-feature android:name="android.hardware.camera2.autofocus" />
+			<uses-permission android:name="android.permission.WAKE_LOCK" />
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:name="com.webmons.disono.rtmpandrtspstreamer.RTMPActivity"/>
-            <activity android:name="com.webmons.disono.rtmpandrtspstreamer.RTSPActivity"/>
+            <activity android:name="com.webmons.disono.rtmpandrtspstreamer.RTMPActivity" android:screenOrientation="landscape"/>
+            <activity android:name="com.webmons.disono.rtmpandrtspstreamer.RTSPActivity" android:screenOrientation="landscape"/>
         </config-file>
 		
 		<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
 		
+        <source-file src="src/android/com/webmons/disono/rtmpandrtspstreamer/CommentListAdapter.java" target-dir="src/com/webmons/disono/rtmpandrtspstreamer"/>
+        <source-file src="src/android/com/webmons/disono/rtmpandrtspstreamer/Comments.java" target-dir="src/com/webmons/disono/rtmpandrtspstreamer"/>
         <source-file src="src/android/com/webmons/disono/rtmpandrtspstreamer/VideoStream.java" target-dir="src/com/webmons/disono/rtmpandrtspstreamer"/>
         <source-file src="src/android/com/webmons/disono/rtmpandrtspstreamer/RTMPActivity.java" target-dir="src/com/webmons/disono/rtmpandrtspstreamer"/>
         <source-file src="src/android/com/webmons/disono/rtmpandrtspstreamer/RTSPActivity.java" target-dir="src/com/webmons/disono/rtmpandrtspstreamer"/>
+        <source-file src="src/android/com/webmons/disono/rtmpandrtspstreamer/SingleMediaScanner.java" target-dir="src/com/webmons/disono/rtmpandrtspstreamer"/>
 		
+		<resource-file src="src/android/res/layout/comment_list.xml" target="res/layout/comment_list.xml" />
 		<resource-file src="src/android/res/layout/rtsp_rtmp_streamer.xml" target="res/layout/rtsp_rtmp_streamer.xml" />
+		
+		<resource-file src="src/android/res/drawable/bg_edittext.xml" target="res/drawable/bg_edittext.xml" />
+		<resource-file src="src/android/res/drawable/bg_edittext_focused.xml" target="res/drawable/bg_edittext_focused.xml" />
+		<resource-file src="src/android/res/drawable/bg_edittext_normal.xml" target="res/drawable/bg_edittext_normal.xml" />
 		
 		<resource-file src="src/android/res/drawable-hdpi/ic_flash_off_white_36dp.png" target="res/drawable-hdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-hdpi/ic_flash_on_white_36dp.png" target="res/drawable-hdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-hdpi/ic_switch_video_white_36dp.png" target="res/drawable-hdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-hdpi/ic_videocam_off_white_36dp.png" target="res/drawable-hdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-hdpi/ic_videocam_white_36dp.png" target="res/drawable-hdpi/ic_videocam_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-hdpi/ic_mode_comment_white_36dp.png" target="res/drawable-hdpi/ic_mode_comment_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-hdpi/ic_fiber_manual_record_white_36dp.png" target="res/drawable-hdpi/ic_fiber_manual_record_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-hdpi/ic_stop_white_36dp.png" target="res/drawable-hdpi/ic_stop_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-hdpi/ic_autorenew_white_36dp.png" target="res/drawable-hdpi/ic_autorenew_white_36dp.png" />
 		
 		<resource-file src="src/android/res/drawable-mdpi/ic_flash_off_white_36dp.png" target="res/drawable-mdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-mdpi/ic_flash_on_white_36dp.png" target="res/drawable-mdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-mdpi/ic_switch_video_white_36dp.png" target="res/drawable-mdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-mdpi/ic_videocam_off_white_36dp.png" target="res/drawable-mdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-mdpi/ic_videocam_white_36dp.png" target="res/drawable-mdpi/ic_videocam_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-mdpi/ic_mode_comment_white_36dp.png" target="res/drawable-mdpi/ic_mode_comment_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-mdpi/ic_fiber_manual_record_white_36dp.png" target="res/drawable-mdpi/ic_fiber_manual_record_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-mdpi/ic_stop_white_36dp.png" target="res/drawable-mdpi/ic_stop_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-mdpi/ic_autorenew_white_36dp.png" target="res/drawable-mdpi/ic_autorenew_white_36dp.png" />
 		
 		<resource-file src="src/android/res/drawable-xhdpi/ic_flash_off_white_36dp.png" target="res/drawable-xhdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xhdpi/ic_flash_on_white_36dp.png" target="res/drawable-xhdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xhdpi/ic_switch_video_white_36dp.png" target="res/drawable-xhdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xhdpi/ic_videocam_off_white_36dp.png" target="res/drawable-xhdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xhdpi/ic_videocam_white_36dp.png" target="res/drawable-xhdpi/ic_videocam_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xhdpi/ic_mode_comment_white_36dp.png" target="res/drawable-xhdpi/ic_mode_comment_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xhdpi/ic_fiber_manual_record_white_36dp.png" target="res/drawable-xhdpi/ic_fiber_manual_record_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xhdpi/ic_stop_white_36dp.png" target="res/drawable-xhdpi/ic_stop_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xhdpi/ic_autorenew_white_36dp.png" target="res/drawable-xhdpi/ic_autorenew_white_36dp.png" />
 		
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_flash_off_white_36dp.png" target="res/drawable-xxhdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_flash_on_white_36dp.png" target="res/drawable-xxhdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_switch_video_white_36dp.png" target="res/drawable-xxhdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_videocam_off_white_36dp.png" target="res/drawable-xxhdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxhdpi/ic_videocam_white_36dp.png" target="res/drawable-xxhdpi/ic_videocam_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxhdpi/ic_mode_comment_white_36dp.png" target="res/drawable-xxhdpi/ic_mode_comment_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxhdpi/ic_fiber_manual_record_white_36dp.png" target="res/drawable-xxhdpi/ic_fiber_manual_record_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxhdpi/ic_stop_white_36dp.png" target="res/drawable-xxhdpi/ic_stop_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxhdpi/ic_autorenew_white_36dp.png" target="res/drawable-xxhdpi/ic_autorenew_white_36dp.png" />
 		
 		<resource-file src="src/android/res/drawable-xxxhdpi/ic_flash_off_white_36dp.png" target="res/drawable-xxxhdpi/ic_flash_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxxhdpi/ic_flash_on_white_36dp.png" target="res/drawable-xxxhdpi/ic_flash_on_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxxhdpi/ic_switch_video_white_36dp.png" target="res/drawable-xxxhdpi/ic_switch_video_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxxhdpi/ic_videocam_off_white_36dp.png" target="res/drawable-xxxhdpi/ic_videocam_off_white_36dp.png" />
 		<resource-file src="src/android/res/drawable-xxxhdpi/ic_videocam_white_36dp.png" target="res/drawable-xxxhdpi/ic_videocam_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxxhdpi/ic_mode_comment_white_36dp.png" target="res/drawable-xxxhdpi/ic_mode_comment_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxxhdpi/ic_fiber_manual_record_white_36dp.png" target="res/drawable-xxxhdpi/ic_fiber_manual_record_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxxhdpi/ic_stop_white_36dp.png" target="res/drawable-xxxhdpi/ic_stop_white_36dp.png" />
+		<resource-file src="src/android/res/drawable-xxxhdpi/ic_autorenew_white_36dp.png" target="res/drawable-xxxhdpi/ic_autorenew_white_36dp.png" />
     </platform>
 </plugin>

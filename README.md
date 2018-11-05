@@ -21,14 +21,22 @@ videoStreamer.streamStop([success], [failed]);
 ```sh
 videoStreamer.streamRTSP('uri', [success], [failed]);
 videoStreamer.streamRTMP('uri', [success], [failed]);
+
 videoStreamer.streamRTMPAuth('uri', 'your-username', 'your-password', [success], [failed]);
+videoStreamer.streamRTSPAuth('uri', 'your-username', 'your-password', [success], [failed]);
+
+videoStreamer.streamStop([success], [failed]);
+
+videoStreamer.commentList(['list of comments'], [success], [failed]);
+videoStreamer.commentListShow(boolean, [success], [failed]);
+videoStreamer.videoRecord([success], [failed]);
 ```
 
 # Future Features
 - [ ] iOS support using LFLiveKit
 https://github.com/LaiFengiOS/LFLiveKit
 
-- [ ] Support for comment form and comment list (Android)
+- [x] Support for comment form and comment list (Android)
 
 # Credits
 [https://github.com/pedroSG94/rtmp-rtsp-stream-client-java](https://github.com/pedroSG94/rtmp-rtsp-stream-client-java)

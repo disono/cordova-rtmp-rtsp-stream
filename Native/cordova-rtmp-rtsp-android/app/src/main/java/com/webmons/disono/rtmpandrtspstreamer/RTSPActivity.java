@@ -18,6 +18,7 @@ import com.pedro.rtsp.rtsp.Protocol;
 import com.pedro.rtsp.utils.ConnectCheckerRtsp;
 
 public class RTSPActivity extends AppCompatActivity implements ConnectCheckerRtsp {
+    private static String TAG = "RTSPActivity";
     SurfaceView surfaceView;
     private RtspCamera1 rtspCameral;
     private String _url = null;
@@ -42,7 +43,7 @@ public class RTSPActivity extends AppCompatActivity implements ConnectCheckerRts
         if (pm != null) {
             mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK |
                     PowerManager.ON_AFTER_RELEASE, TAG);
-            mWakeLock.acquire();
+            mWakeLock.acquire(10);
         }
 
         Intent intent = getIntent();

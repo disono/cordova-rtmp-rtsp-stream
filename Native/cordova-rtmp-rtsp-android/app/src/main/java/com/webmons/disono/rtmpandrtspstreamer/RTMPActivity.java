@@ -44,7 +44,7 @@ public class RTMPActivity extends AppCompatActivity implements ConnectCheckerRtm
         if (pm != null) {
             mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK |
                     PowerManager.ON_AFTER_RELEASE, TAG);
-            mWakeLock.acquire();
+            mWakeLock.acquire(10);
         }
 
         Intent intent = getIntent();
