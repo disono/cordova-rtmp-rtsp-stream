@@ -1,4 +1,5 @@
-# Cordova RTMP and RTSP Streamer
+# Cordova RTMP and RTSP Live Streaming Plugin
+This cordova plugin is use to stream a live video to RTMP or RTSP server.
 Library based on [rtmp-rtsp-stream-client-java](https://github.com/pedroSG94/rtmp-rtsp-stream-client-java)
 
 # Install
