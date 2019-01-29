@@ -90,3 +90,12 @@ Library for stream in RTMP and RTSP. All code in Java.
 
 # License
 Cordova RTMP and RTSP Streamer is licensed under the Apache License (ASL) license. For more information, see the LICENSE file in this repository.
+
+# Hire Us!
+Do you like my work? I am a Senior Full Stack App Developer (Web, Desktop & Mobile App) & Syadmin, you can hire me, open a issue or contact me!
+
+Additionally you could be interested in check or hire us through our [Webmons Development Studio.](https://www.webmons.com)
+
+Do you still need more info about me or my work?
+
+You could check my [Linkedin profile](https://www.linkedin.com/in/disono) and [Twitter profile](https://twitter.com/master_archie)
