@@ -1,7 +1,7 @@
 {
   "name": "cordova-rtsp-rtmp-stream",
   "cordova_name": "Cordova RTMP and RTSP Live Streamer for Android",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "Cross-platform plugin for Cordova / PhoneGap to to easily stream RTSP or RTMP. Available for Android ONLY.",
   "cordova": {
     "id": "cordova-rtsp-rtmp-stream",
@@ -17,17 +17,17 @@
     "cordova",
     "phonegap",
     "rtsp",
-	"rtmp",
-	"stream",
-	"video-stream",
-	"rtsp",
-	"cordova-android",
-	"ionic-rtmp",
-	"ionic-rtsp",
-	"android-rtmp",
-	"android-rtsp",
-	"cordova-live-stream",
-	"live-stream"
+    "rtmp",
+    "stream",
+    "video-stream",
+    "rtsp",
+    "cordova-android",
+    "ionic-rtmp",
+    "ionic-rtsp",
+    "android-rtmp",
+    "android-rtsp",
+    "cordova-live-stream",
+    "live-stream"
   ],
   "engines": [
     {
