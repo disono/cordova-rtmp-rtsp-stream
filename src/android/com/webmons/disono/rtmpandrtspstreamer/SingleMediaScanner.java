@@ -11,6 +11,13 @@ import android.util.Log;
 
 import java.io.File;
 
+/**
+ * Author: Archie, Disono (webmonsph@gmail.com)
+ * Website: https://webmons.com
+ * 
+ * Created at: 1/09/2018
+ */
+
 public class SingleMediaScanner implements MediaScannerConnectionClient {
 
   private MediaScannerConnection mMs;

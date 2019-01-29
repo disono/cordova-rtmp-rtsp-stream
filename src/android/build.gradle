@@ -3,5 +3,5 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.4.3'
+    implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.1'
 }

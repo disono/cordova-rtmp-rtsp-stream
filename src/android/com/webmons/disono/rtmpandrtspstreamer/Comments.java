@@ -1,5 +1,12 @@
 package com.webmons.disono.rtmpandrtspstreamer;
 
+/**
+ * Author: Archie, Disono (webmonsph@gmail.com)
+ * Website: https://webmons.com
+ * 
+ * Created at: 1/09/2018
+ */
+
 public class Comments {
 
   private String imgCommentAvatar;

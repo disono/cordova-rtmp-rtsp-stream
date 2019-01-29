@@ -25,18 +25,46 @@ videoStreamer.streamRTMP('uri', [success], [failed]);
 videoStreamer.streamRTMPAuth('uri', 'your-username', 'your-password', [success], [failed]);
 videoStreamer.streamRTSPAuth('uri', 'your-username', 'your-password', [success], [failed]);
 
+// manually stop streaming
 videoStreamer.streamStop([success], [failed]);
 
-videoStreamer.commentList(['list of comments'], [success], [failed]);
+// comment list (Optional)
 videoStreamer.commentListShow(boolean, [success], [failed]);
+videoStreamer.commentList([{avatar: 'URI', username: 'Username', content: 'Message/Comment/Content Text'}], [success], [failed]);
+
+// record locally (MP4)
 videoStreamer.videoRecord([success], [failed]);
 ```
 
+# RTMP & RTSP action response
+```
+onConnectionSuccess: data
+
+onConnectionFailed: void
+
+onDisconnect: void
+
+onAuthError: void
+
+onAuthSuccess: data
+
+onStartStream: data
+
+onStopStream: data
+
+onError: data
+
+onCommentSend: data
+
+onCommentItemSelected: data
+```
+
 # Future Features
-- [ ] iOS support using LFLiveKit
-https://github.com/LaiFengiOS/LFLiveKit
+- [ ] iOS support using HaishinKit.swift (Separate Plugin - RTMP Only)
+[https://github.com/disono/cordova-rtmp-ios](https://github.com/disono/cordova-rtmp-ios)
 
 - [x] Support for comment form and comment list (Android)
+- [x] Comment form
 
 # Credits
 [https://github.com/pedroSG94/rtmp-rtsp-stream-client-java](https://github.com/pedroSG94/rtmp-rtsp-stream-client-java)

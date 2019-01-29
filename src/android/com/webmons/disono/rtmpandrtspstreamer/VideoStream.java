@@ -20,24 +20,24 @@ import java.io.File;
 
 /**
  * Author: Archie, Disono (webmonsph@gmail.com)
- * Website: http://www.webmons.com
- * <p>
+ * Website: https://webmons.com
+ * 
  * Created at: 1/09/2018
  */
 
 /**
  * Wowza Configuration
- * <p>
+ * 
  * Config
  * http://your-ip/enginemanager
  * https://www.wowza.com/docs/how-to-set-up-live-streaming-using-an-rtmp-based-encoder
  * https://www.wowza.com/docs/how-to-set-up-live-streaming-using-a-native-rtp-encoder-with-sdp-file
- * <p>
+ * 
  * Server URL: rtmp://[wowza-ip-address]/live
  * Stream Name: myStream
  * User: publisherName
  * password: [password]
- * <p>
+ * 
  * Verify your server or endpoint using ffmpeg
  * ffmpeg -i pathtomp4file -f flv rtmp://yourendpoint
  */
