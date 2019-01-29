@@ -320,7 +320,7 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
             _toggleBtnImgVideo(false);
 
             // close the flash
-            if (camera1ApiManager.isLanternEnable()) {
+            if (camera1ApiManager.isLanternEnabled()) {
                 camera1ApiManager.disableLantern();
 
                 isFlashOn = false;
@@ -376,9 +376,14 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
     }
 
     private void _toggleFlash() {
-        if (!isFlashOn && !camera1ApiManager.isLanternEnable()) {
-            camera1ApiManager.enableLantern();
-            isFlashOn = true;
+        if (!isFlashOn && !camera1ApiManager.isLanternEnabled()) {
+            try {
+                camera1ApiManager.enableLantern();
+                isFlashOn = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                isFlashOn = false;
+            }
         } else {
             camera1ApiManager.disableLantern();
             isFlashOn = false;

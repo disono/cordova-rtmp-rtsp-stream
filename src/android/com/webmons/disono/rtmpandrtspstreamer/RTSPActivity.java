@@ -272,7 +272,7 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
         int _w = 0;
 		int _h = 0;
 
-        this.resolutions = rtmpCameral.getResolutionsBack();
+        this.resolutions = rtspCameral.getResolutionsBack();
         for (int i = 0; i < this.resolutions.size(); i++) {
             Log.i(TAG, "RES: H: " + this.resolutions.get(i).height + " W: " + this.resolutions.get(i).width);
 			
@@ -325,7 +325,7 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
             _toggleBtnImgVideo(false);
 
             // close the flash
-            if (camera1ApiManager.isLanternEnable()) {
+            if (camera1ApiManager.isLanternEnabled()) {
                 camera1ApiManager.disableLantern();
 
                 isFlashOn = false;
@@ -381,9 +381,14 @@ public class RTSPActivity extends CordovaActivity implements ConnectCheckerRtsp 
     }
 
     private void _toggleFlash() {
-        if (!isFlashOn && !camera1ApiManager.isLanternEnable()) {
-            camera1ApiManager.enableLantern();
-            isFlashOn = true;
+        if (!isFlashOn && !camera1ApiManager.isLanternEnabled()) {
+            try {
+                camera1ApiManager.enableLantern();
+                isFlashOn = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                isFlashOn = false;
+            }
         } else {
             camera1ApiManager.disableLantern();
             isFlashOn = false;
