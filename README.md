@@ -94,7 +94,7 @@ Cordova RTMP and RTSP Streamer is licensed under the Apache License (ASL) licens
 # Hire Us!
 Do you like my work? I am a Senior Full Stack App Developer (Web, Desktop & Mobile App) & Syadmin, you can hire me, open a issue or contact me!
 
-Additionally you could be interested in check or hire us through our [Webmons Development Studio.](https://www.webmons.com)
+Additionally you could be interested in check or hire us through our [Webmons Development Studio.](https://webmons.com)
 
 Do you still need more info about me or my work?
 
