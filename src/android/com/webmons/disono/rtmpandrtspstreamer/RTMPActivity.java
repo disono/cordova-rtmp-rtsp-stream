@@ -565,7 +565,7 @@ public class RTMPActivity extends CordovaActivity implements ConnectCheckerRtmp 
         }
 
         if (isShow) {
-            commentForm.setBackgroundColor(Color.parseColor("#18E4E5"));
+            commentForm.setBackgroundColor(Color.parseColor("#40536077"));
             list.setVisibility(View.VISIBLE);
             txtComment.setVisibility(View.VISIBLE);
             btnComment.setVisibility(View.VISIBLE);

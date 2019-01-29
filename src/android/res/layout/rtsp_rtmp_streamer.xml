@@ -122,7 +122,7 @@
                 android:id="@+id/commentForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#18E4E5"
+                android:background="#40536077"
                 android:gravity="bottom"
                 android:orientation="horizontal"
                 android:paddingLeft="38dp"

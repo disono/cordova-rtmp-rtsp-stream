@@ -13,8 +13,23 @@ $ cordova plugin add https://github.com/disono/cordova-rtmp-rtsp-stream
 
 # Using the plugin
 ```sh
+// without comment
 videoStreamer.streamRTSPAuth('rtsp://your-ip/live/app_name', 'your-username', 'your-password', [success], [failed]);
 videoStreamer.streamStop([success], [failed]);
+
+// show comment
+videoStreamer.streamRTSPAuth('rtsp://your-ip/live/app_name', 'your-username', 'your-password', function (res) 
+	// show all the comment form and list if connection and authentication is successful
+	if (res.event_name == 'onConnectionSuccess') {
+		videoStreamer.commentListShow(true, function (resCom) {
+					
+		}, function (e) {
+					
+		});
+	}
+}, function (e) {
+		
+});
 ```
 
 # Methods
