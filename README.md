@@ -1,3 +1,8 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/) 
+# THIS PLUGIN FOR CORDOVA IS DEPRECATED
+Instead use this capacitor-rtsp-rtmp-stream for more updated plugin
+[capacitor-rtsp-rtmp-stream](https://github.com/disono/capacitor-rtsp-rtmp-stream)
+
 # Cordova RTMP and RTSP Live Streaming Plugin
 This cordova plugin is use to stream a live video to RTMP or RTSP server.
 Library based on [rtmp-rtsp-stream-client-java](https://github.com/pedroSG94/rtmp-rtsp-stream-client-java)
